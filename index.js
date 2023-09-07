@@ -59,7 +59,7 @@ app.post('/upload',checkAuth,upload.single('image'),(req,res)=>{
 
 
 //создание поста
-app.post('/posts', checkAuth, postCreateValidation, create)
+app.post('/posts', checkAuth, postCreateValidation,handleValidationErrors, create)
 //поиск всех постов
 app.get('/posts', getAll)
 //получение определенной статьи
@@ -67,7 +67,7 @@ app.get('/posts/:id', getOnePost)
 //удаление поста
 app.delete('/post/:id', checkAuth, removePost)
 // обновление статьи
-app.patch('/posts/:id', checkAuth, postCreateValidation, update)
+app.patch('/posts/:id', checkAuth, postCreateValidation,handleValidationErrors, update)
 //получение тегов
 app.get('/tags', getLastTags)
 
