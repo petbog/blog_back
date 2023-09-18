@@ -30,12 +30,12 @@ const storage = multer.diskStorage({
     },
 })
 
-const upload = multer({ storage })
+export const upload = multer({ storage })
 
 //подключаем json формат и теперь его начинает понимать приложение
 app.use(express.json())
 //показ картинок при запросе
-app.use('/uploads',express.static('uploads'))
+app.use('/uploads', express.static('uploads'))
 
 //разрешение позволяющее делать кросдоменные запросы
 app.use(cors())
@@ -43,17 +43,17 @@ app.use(cors())
 //роутинг
 
 //авторизация 
-app.post('/auth/login', loginValidation,handleValidationErrors, login)
+app.post('/auth/login', loginValidation, handleValidationErrors, login)
 //регистрация
-app.post('/auth/register', registerValidation,handleValidationErrors, register)
+app.post('/auth/register', upload.single('avatar'),  registerValidation, handleValidationErrors, register)
 //инфо о нас
 app.get('/auth/me', checkAuth, getMe)
 
 
 //загрузка картинки
-app.post('/upload',checkAuth,upload.single('image'),(req,res)=>{
+app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
     res.json({
-        url:`/uploads/${req.file.originalname}`
+        url: `/uploads/${req.file.originalname}`
     })
 })
 

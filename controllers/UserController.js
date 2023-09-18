@@ -1,49 +1,63 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import userModel from "../models/user.js"
+import { upload } from '../index.js';
 
 //регистрация
+
+
+
 export const register = (async (req, res) => {
     try {
-
-        //шифрование пароля
         const password = req.body.password;
         const salt = await bcrypt.genSalt(10);
-        const hach = await bcrypt.hash(password, salt);
+        const hash = await bcrypt.hash(password, salt);
 
         const doc = new userModel({
             email: req.body.email,
-            passwordHash: hach,
+            passwordHash: hash,
             fullName: req.body.fullName,
-            avatarUrl: req.body.avatarUrl,
-        })
+            avatarUrl: req.body.avatarUrl
+        });
 
-        const user = await doc.save()
+        // Обработка загрузки аватара
+        upload.single('avatar')(req, res, async (err) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({
+                    message: "Не удалось загрузить изображение"
+                });
+            }
 
-        const token = jwt.sign({
-            _id: user._id
-        },
-            //ключ шифрования токена
-            'secret123',
-            {
-                //время жизни токера 
-                expiresIn: '30d'
-            })
+            // Если файл успешно загружен, сохраняем его имя в базу данных
+            if (req.file) {
+                doc.avatarUrl = req.file.filename;
+            }
 
-        const { passwordHash, ...userData } = user._doc
+            const user = await doc.save();
 
-        res.json({
-            ...userData,
-            token,
-        })
+            const token = jwt.sign({
+                _id: user._id
+            },
+                'secret123',
+                {
+                    expiresIn: '30d'
+                });
+
+            const { passwordHash, ...userData } = user._doc;
+
+            res.json({
+                ...userData,
+                token,
+            });
+        });
     } catch (error) {
-        console.log(error)
+        console.log(error);
         res.status(500).json({
             message: "Не удалось зарегистрироваться"
-        })
+        });
     }
-})
-
+});
 //авторизация 
 export const login = (async (req, res) => {
     try {
