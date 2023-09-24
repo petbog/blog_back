@@ -60,7 +60,7 @@ app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
 
 //создание поста
 app.post('/posts', checkAuth, postCreateValidation,handleValidationErrors, create)
-//поиск всех постов
+//получение всех постов
 app.get('/posts', getAll)
 //получение определенной статьи
 app.get('/posts/:id', getOnePost)
