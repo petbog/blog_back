@@ -121,3 +121,21 @@ export const update = async (req, res) => {
 
     }
 }
+//обновление статей
+
+
+export const getPostsByTag = async (req, res) => {
+    try {
+      const tag = req.query.tag; // используем req.query.tag для получения значения из запроса
+  
+      // Используем метод find для поиска полных статей, содержащих указанный тег
+      const postsWithTag = await PostModel.find({ tags: tag }).populate('author').populate('tags')
+  
+      res.json(postsWithTag);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        message: 'Не удалось получить статьи'
+      });
+    }
+  }

@@ -4,7 +4,7 @@ import mongoose from "mongoose"
 import cors from 'cors'
 import checkAuth from "./Utils/checkAuth.js"
 import { getMe, login, register } from "./controllers/UserController.js"
-import { create, getAll, getLastTags, getOnePost, removePost, update } from "./controllers/PostController.js"
+import { create, getAll, getLastTags, getOnePost,  getPostsByTag,  removePost, update } from "./controllers/PostController.js"
 import multer from "multer"
 import handleValidationErrors from './Utils/handleErrors.js'
 
@@ -45,7 +45,7 @@ app.use(cors())
 //авторизация 
 app.post('/auth/login', loginValidation, handleValidationErrors, login)
 //регистрация
-app.post('/auth/register', upload.single('avatar'),  registerValidation, handleValidationErrors, register)
+app.post('/auth/register', upload.single('avatar'), registerValidation, handleValidationErrors, register)
 //инфо о нас
 app.get('/auth/me', checkAuth, getMe)
 
@@ -59,7 +59,7 @@ app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
 
 
 //создание поста
-app.post('/posts', checkAuth, postCreateValidation,handleValidationErrors, create)
+app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, create)
 //получение всех постов
 app.get('/posts', getAll)
 //получение определенной статьи
@@ -67,9 +67,11 @@ app.get('/posts/:id', getOnePost)
 //удаление поста
 app.delete('/post/:id', checkAuth, removePost)
 // обновление статьи
-app.patch('/posts/:id', checkAuth, postCreateValidation,handleValidationErrors, update)
+app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, update)
 //получение тегов
 app.get('/tags', getLastTags)
+//получение  статей по тегу 
+app.get('/tags', getPostsByTag)
 
 
 //создание порта
