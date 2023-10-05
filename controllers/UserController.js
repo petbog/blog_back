@@ -1,63 +1,108 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import userModel from "../models/user.js"
-import { upload } from '../index.js';
+
 
 //регистрация
 
+export const register = async (req, res) => {
 
-
-export const register = (async (req, res) => {
     try {
-        const password = req.body.password;
-        const salt = await bcrypt.genSalt(10);
-        const hash = await bcrypt.hash(password, salt);
-
+        //шифрование пароля
+        const password = req.body.password
+        const salt = await bcrypt.genSalt(10)
+        const hash = await bcrypt.hash(password, salt)
+        console.log({
+            email: req.body.email,
+            fullName: req.body.fullName,
+            avatarUrl: req.body.avatarUrl,
+            passworHash: hash,
+        })
+        //создание пользователя
         const doc = new userModel({
             email: req.body.email,
             passwordHash: hash,
             fullName: req.body.fullName,
             avatarUrl: req.body.avatarUrl
         });
+        const user = await doc.save()
 
-        // Обработка загрузки аватара
-        upload.single('avatar')(req, res, async (err) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).json({
-                    message: "Не удалось загрузить изображение"
-                });
+        const token = jwt.sign({
+            _id: user._id
+        }
+            , 'secret123',
+            {
+                expiresIn: '30d'
             }
+        )
 
-            // Если файл успешно загружен, сохраняем его имя в базу данных
-            if (req.file) {
-                doc.avatarUrl = req.file.filename;
-            }
+        const { passworHash, ...userData } = user._doc
 
-            const user = await doc.save();
+        res.json({
+            ...userData,
+            token,
+        })
 
-            const token = jwt.sign({
-                _id: user._id
-            },
-                'secret123',
-                {
-                    expiresIn: '30d'
-                });
-
-            const { passwordHash, ...userData } = user._doc;
-
-            res.json({
-                ...userData,
-                token,
-            });
-        });
     } catch (error) {
-        console.log(error);
+        console.log(error)
         res.status(500).json({
-            message: "Не удалось зарегистрироваться"
-        });
+            message: 'Не удалось зарегистрироваться'
+        })
     }
-});
+}
+
+
+// export const register = (async (req, res) => {
+//     try {
+//         const password = req.body.password;
+//         const salt = await bcrypt.genSalt(10);
+//         const hash = await bcrypt.hash(password, salt);
+
+//         const doc = new userModel({
+//             email: req.body.email,
+//             passwordHash: hash,
+//             fullName: req.body.fullName,
+//             avatarUrl: req.body.avatarUrl
+//         });
+
+//         // Обработка загрузки аватара
+//         upload.single('avatar')(req, res, async (err) => {
+//             if (err) {
+//                 console.error(err);
+//                 return res.status(500).json({
+//                     message: "Не удалось загрузить изображение"
+//                 });
+//             }
+
+//             // Если файл успешно загружен, сохраняем его имя в базу данных
+//             if (req.file) {
+//                 doc.avatarUrl = req.file.filename;
+//             }
+
+//             const user = await doc.save();
+
+//             const token = jwt.sign({
+//                 _id: user._id
+//             },
+//                 'secret123',
+//                 {
+//                     expiresIn: '30d'
+//                 });
+
+//             const { passwordHash, ...userData } = user._doc;
+
+//             res.json({
+//                 ...userData,
+//                 token,
+//             });
+//         });
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).json({
+//             message: "Не удалось зарегистрироваться"
+//         });
+//     }
+// });
 //авторизация 
 export const login = (async (req, res) => {
     try {
@@ -100,7 +145,7 @@ export const login = (async (req, res) => {
 })
 
 //инфо о нас
-export const getMe=( async (req, res) => {
+export const getMe = (async (req, res) => {
     try {
 
         const user = await userModel.findById(req.userId)

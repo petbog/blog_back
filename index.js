@@ -45,13 +45,13 @@ app.use(cors())
 //авторизация 
 app.post('/auth/login', loginValidation, handleValidationErrors, login)
 //регистрация
-app.post('/auth/register', upload.single('avatar'), registerValidation, handleValidationErrors, register)
+app.post('/auth/register',  registerValidation, handleValidationErrors, register)
 //инфо о нас
 app.get('/auth/me', checkAuth, getMe)
 
 
 //загрузка картинки
-app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
+app.post('/upload',  upload.single('image'), (req, res) => {
     res.json({
         url: `/uploads/${req.file.originalname}`
     })
