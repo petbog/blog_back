@@ -4,7 +4,7 @@ import mongoose from "mongoose"
 import cors from 'cors'
 import checkAuth from "./Utils/checkAuth.js"
 import { getMe, login, register } from "./controllers/UserController.js"
-import { create, getAll, getLastTags, getOnePost,  getPostsByTag,  removePost, update } from "./controllers/PostController.js"
+import { create, getAll, getLastTags, getNewPost, getOnePost,  getPopulatePost,  getPostsByTag,  removePost, update } from "./controllers/PostController.js"
 import multer from "multer"
 import handleValidationErrors from './Utils/handleErrors.js'
 
@@ -72,6 +72,10 @@ app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors,
 app.get('/tags', getLastTags)
 //получение  статей по тегу 
 app.get('/tags', getPostsByTag)
+//получение статей по популярности
+app.get('/populate',getPopulatePost)
+//сортировка постов новые
+app.get('/new',getNewPost)
 
 
 //создание порта

@@ -126,16 +126,38 @@ export const update = async (req, res) => {
 
 export const getPostsByTag = async (req, res) => {
     try {
-      const tag = req.query.tag; // используем req.query.tag для получения значения из запроса
-  
-      // Используем метод find для поиска полных статей, содержащих указанный тег
-      const postsWithTag = await PostModel.find({ tags: tag }).populate('author').populate('tags')
-  
-      res.json(postsWithTag);
+        const tag = req.query.tag; // используем req.query.tag для получения значения из запроса
+
+        // Используем метод find для поиска полных статей, содержащих указанный тег
+        const postsWithTag = await PostModel.find({ tags: tag }).populate('author').populate('tags')
+
+        res.json(postsWithTag);
     } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        message: 'Не удалось получить статьи'
-      });
+        console.error(error);
+        res.status(500).json({
+            message: 'Не удалось получить статьи'
+        });
     }
-  }
+}
+
+//получение популярных статей
+export const getPopulatePost = async (req, res) => {
+    try {
+        const posts = await PostModel.find().sort({ viewsCount: -1 });
+        res.json(posts);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Внутренняя ошибка сервера' });
+    }
+}
+
+//сортировка постов новые
+export const getNewPost = async (req, res) => {
+    try {
+        const posts = await PostModel.find().sort({ createdAt: -1 });
+        res.json(posts);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Внутренняя ошибка сервера' });
+    }
+};
