@@ -125,18 +125,21 @@ export const update = async (req, res) => {
 
 
 export const getPostsByTag = async (req, res) => {
+    const tag = req.query.tag;
+    const tags = tag.split(' ');
+  
     try {
-        const tag = req.query.tag; // используем req.query.tag для получения значения из запроса
-
-        // Используем метод find для поиска полных статей, содержащих указанный тег
-        const postsWithTag = await PostModel.find({ tags: tag }).populate('author').populate('tags')
-
-        res.json(postsWithTag);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            message: 'Не удалось получить статьи'
-        });
+      // Используйте регулярное выражение для сопоставления тегов в базе данных
+      const articles = await PostModel.find({
+        tags: {
+          $regex: tags.map(tag => `#${tag.replace('#', '')}`).join('|'),
+        }
+      });
+  
+      res.json(articles);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Ошибка поиска статей' });
     }
 }
 

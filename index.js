@@ -71,7 +71,7 @@ app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors,
 //получение тегов
 app.get('/tags', getLastTags)
 //получение  статей по тегу 
-app.get('/tags', getPostsByTag)
+app.get('/articlesbytag', getPostsByTag)
 //получение статей по популярности
 app.get('/populate',getPopulatePost)
 //сортировка постов новые
