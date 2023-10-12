@@ -24,6 +24,11 @@ const PostSchema = new mongoose.Schema({
         require:true,
         
     },
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comments',
+        default: [],
+    }],
     imageUrl: String
 }, {
     timestamps: true,

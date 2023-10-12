@@ -4,7 +4,7 @@ import PostModel from "../models/post.js";
 export const getAll = async (req, res) => {
     try {
         //подключение связи
-        const posts = await PostModel.find().populate('user').exec();
+        const posts = await PostModel.find().populate('user').populate('comments').exec();
 
         res.json(posts)
 
@@ -39,7 +39,7 @@ export const getOnePost = async (req, res) => {
             { $inc: { viewsCount: 1 } },
             { new: true }
         )
-            .populate('user') // Перенесен сюда
+            .populate('user').populate('comments') // Перенесен сюда
             .exec();
 
         if (!doc) {

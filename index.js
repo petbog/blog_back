@@ -1,5 +1,5 @@
 import express from "express"
-import { loginValidation, postCreateValidation, registerValidation } from "./validations.js"
+import { commentsValidation, loginValidation, postCreateValidation, registerValidation } from "./validations.js"
 import mongoose from "mongoose"
 import cors from 'cors'
 import checkAuth from "./Utils/checkAuth.js"
@@ -7,6 +7,7 @@ import { getMe, login, register } from "./controllers/UserController.js"
 import { create, getAll, getLastTags, getNewPost, getOnePost,  getPopulatePost,  getPostsByTag,  removePost, update } from "./controllers/PostController.js"
 import multer from "multer"
 import handleValidationErrors from './Utils/handleErrors.js'
+import { createComments, getAllComments } from "./controllers/CommentsController.js"
 
 
 
@@ -76,6 +77,12 @@ app.get('/articlesbytag', getPostsByTag)
 app.get('/populate',getPopulatePost)
 //сортировка постов новые
 app.get('/new',getNewPost)
+
+
+//создание комментария
+app.post('/posts/:postId/comment', commentsValidation,createComments);
+//получение всех комментариев
+// app.get('/posts/:postId/comments', commentsValidation,getAllComments);
 
 
 //создание порта
