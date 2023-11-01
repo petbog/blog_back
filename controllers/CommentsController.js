@@ -33,7 +33,7 @@ export const createComments = async (req, res) => {
 
         const doc = new CommentsModel({
             post: post._id,
-            text: req.body.text,
+            text: req.body.comment,
             user: req.userId,
             imageUrl: req.body.imageUrl
         });
@@ -50,3 +50,53 @@ export const createComments = async (req, res) => {
         })
     }
 }
+
+
+// export const deleteComment = async (req, res) => {
+//     try {
+//       const commentId = req.params.commentId;
+//       const comment = await CommentsModel.findById(commentId);
+  
+//       if (!comment) {
+//         return res.status(404).json({ error: 'Комментарий не найден' });
+//       }
+  
+//       const postId = comment.post;
+//       const post = await PostModel.findById(postId);
+  
+//       if (!post) {
+//         return res.status(404).json({ error: 'Связанный пост не найден' });
+//       }
+  
+//       // Удалите комментарий из массива комментариев поста
+//       post.comments = post.comments.filter((c) => c.toString() !== commentId);
+//       await post.save();
+  
+//       // Удалите сам комментарий
+//       await comment.remove();
+  
+//       res.status(200).json({ message: 'Комментарий успешно удален' });
+//     } catch (error) {
+//       console.log(error);
+//       res.status(500).json({ message: 'Ошибка сервера' });
+//     }
+//   };
+export const deleteComment = async (req, res) => {
+    const postId = req.params.commentId;
+
+    try {
+        const doc = await CommentsModel.findByIdAndDelete(postId);
+        if (!doc) {
+            return res.status(404).json({ message: "Статья не найдена" });
+        }
+
+        res.json({
+            success: true
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Не удалось удалить статью"
+        });
+    }
+};
