@@ -85,6 +85,7 @@ app.post('/posts/:postId/comment', commentsValidation,createComments);
 // app.get('/posts/:postId/comments', commentsValidation,getAllComments);
 //удаление коомментария
 app.delete('/comments/:commentId', deleteComment);
+app.get('/posts/:postId/comments', getAll);
 
 
 //создание порта

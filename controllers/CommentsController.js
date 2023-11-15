@@ -24,6 +24,7 @@ export const getAllComments = async (req, res) => {
 }
 
 export const createComments = async (req, res) => {
+    console.log(req.params.userId)
     try {
         const postId = req.params.postId;
         const post = await PostModel.findById(postId);
@@ -51,7 +52,18 @@ export const createComments = async (req, res) => {
     }
 }
 
-
+// Получить комментарии для определенного поста
+export const getAll = async (req, res) => {
+    try {
+        const postId = req.params.postId;
+        if (!postId) { res.status(500).json({ error: 'Ошибка сервера' }) }
+        const comments = await CommentsModel.find({ post: postId }).populate('user');
+        res.json(comments);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Ошибка сервера' });
+    }
+};
 // export const deleteComment = async (req, res) => {
 //     try {
 //       const commentId = req.params.commentId;
