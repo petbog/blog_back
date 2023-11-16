@@ -7,7 +7,7 @@ import { getMe, login, register } from "./controllers/UserController.js"
 import { create, getAll, getLastTags, getNewPost, getOnePost,  getPopulatePost,  getPostsByTag,  removePost, update } from "./controllers/PostController.js"
 import multer from "multer"
 import handleValidationErrors from './Utils/handleErrors.js'
-import { createComments, deleteComment, getAllComments } from "./controllers/CommentsController.js"
+import { createComments, deleteComment, getAllComments, getAllPost } from "./controllers/CommentsController.js"
 
 
 
@@ -85,7 +85,8 @@ app.post('/posts/:postId/comment', commentsValidation,createComments);
 // app.get('/posts/:postId/comments', commentsValidation,getAllComments);
 //удаление коомментария
 app.delete('/comments/:commentId', deleteComment);
-app.get('/posts/:postId/comments', getAll);
+//получение поста с юзером
+app.get('/posts/:postId/comments', getAllPost);
 
 
 //создание порта

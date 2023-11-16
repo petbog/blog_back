@@ -35,7 +35,7 @@ export const createComments = async (req, res) => {
         const doc = new CommentsModel({
             post: post._id,
             text: req.body.comment,
-            user: req.userId,
+            user: req.body.userId,
             imageUrl: req.body.imageUrl
         });
         const comment = await doc.save();
@@ -53,7 +53,7 @@ export const createComments = async (req, res) => {
 }
 
 // Получить комментарии для определенного поста
-export const getAll = async (req, res) => {
+export const getAllPost = async (req, res) => {
     try {
         const postId = req.params.postId;
         if (!postId) { res.status(500).json({ error: 'Ошибка сервера' }) }
