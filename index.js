@@ -13,7 +13,7 @@ import { createComments, deleteComment, getAllComments, getAllPost } from "./con
 // 'mongodb+srv://admin:Qwer_1234@cluster0.wy8ihwv.mongodb.net/blog2?retryWrites=true&w=majority'
 //подключение базы данных mongodb
 mongoose.connect(
-    process.env.mongodb_API
+    mongodb_API
 ).then(() => console.log('db ok'))
     .catch((err) => console.log('db err', err))
 
@@ -89,7 +89,7 @@ app.get('/posts/:postId/comments', getAllPost);
 
 
 //создание порта
-app.listen(process.env.PORT || 4444, (err) => {
+app.listen(mongodb_API || 4444, (err) => {
     if (err) {
         return console.warn(err)
     }
