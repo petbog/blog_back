@@ -93,7 +93,7 @@ app.get('/posts/:postId/comments', getAllPost);
 
 
 //создание порта
-app.listen(process.env.PORT || 4444, (err) => {
+app.listen(process.env.mongodb_API || 4444, (err) => {
     if (err) {
         return console.warn(err)
     }
