@@ -14,7 +14,7 @@ import { createComments, deleteComment, getAllPost } from "./controllers/Comment
 // 'mongodb+srv://admin:Qwer_1234@cluster0.wy8ihwv.mongodb.net/blog2?retryWrites=true&w=majority'
 //подключение базы данных mongodb
 mongoose.connect(
-    process.env.mongodb_API
+    process.env.reactapi
 ).then(() => console.log('db ok'))
     .catch((err) => console.log('db err', err))
 
@@ -93,7 +93,7 @@ app.get('/posts/:postId/comments', getAllPost);
 
 
 //создание порта
-app.listen(process.env.mongodb_API || 4444, (err) => {
+app.listen(process.env.reactapi || 4444, (err) => {
     if (err) {
         return console.warn(err)
     }
