@@ -1,13 +1,14 @@
 import express from "express"
 import { commentsValidation, loginValidation, postCreateValidation, registerValidation } from "./validations.js"
 import mongoose from "mongoose"
+import fs from 'fs'
 import cors from 'cors'
 import checkAuth from "./Utils/checkAuth.js"
 import { getMe, login, register } from "./controllers/UserController.js"
 import { create, getAll, getLastTags, getNewPost, getOnePost, getPopulatePost, getPostsByTag, removePost, update } from "./controllers/PostController.js"
 import multer from "multer"
 import handleValidationErrors from './Utils/handleErrors.js'
-import { createComments, deleteComment, getAllComments, getAllPost } from "./controllers/CommentsController.js"
+import { createComments, deleteComment, getAllPost } from "./controllers/CommentsController.js"
 
 
 // 'mongodb+srv://admin:Qwer_1234@cluster0.wy8ihwv.mongodb.net/blog2?retryWrites=true&w=majority'
@@ -23,6 +24,9 @@ const app = express()
 //создания хранилища картинок
 const storage = multer.diskStorage({
     destination: (_, __, cb) => {
+        if (!fs.existsSync('uploads')) {
+            fs.mkdirSync('uploads')
+        }
         cb(null, 'uploads')
     },
     filename: (_, file, cb) => {
@@ -89,7 +93,7 @@ app.get('/posts/:postId/comments', getAllPost);
 
 
 //создание порта
-app.listen(process.env.mongodb_API || 4444, (err) => {
+app.listen(process.env.PORT || 4444, (err) => {
     if (err) {
         return console.warn(err)
     }
