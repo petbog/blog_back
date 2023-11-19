@@ -110,3 +110,4 @@ app.listen(process.env.PORT || PORT, (err) => {
     }
     console.log('serwer ok')
 })
+export default app
