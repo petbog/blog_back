@@ -1,4 +1,5 @@
-import express from "express"
+import express from "express";
+import { config } from "dotenv";
 import { commentsValidation, loginValidation, postCreateValidation, registerValidation } from "./validations.js"
 import mongoose from "mongoose"
 import fs from 'fs'
@@ -9,7 +10,6 @@ import { create, getAll, getLastTags, getNewPost, getOnePost, getPopulatePost, g
 import multer from "multer"
 import handleValidationErrors from './Utils/handleErrors.js'
 import { createComments, deleteComment, getAllPost } from "./controllers/CommentsController.js"
-import { config } from "dotenv"
 
 //создание express приложения
 const app = express()
