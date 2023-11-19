@@ -10,14 +10,27 @@ import multer from "multer"
 import handleValidationErrors from './Utils/handleErrors.js'
 import { createComments, deleteComment, getAllPost } from "./controllers/CommentsController.js"
 
+//создание express приложения
+const app = express()
+const PORT = '4444'
+//подключаем json формат и теперь его начинает понимать приложение
+app.use(express.json())
+//разрешение позволяющее делать кросдоменные запросы
+app.use(cors())
+config();
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://fs-blog-ft.vercel.app');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
 
 // 'mongodb+srv://admin:Qwer_1234@cluster0.wy8ihwv.mongodb.net/blog2?retryWrites=true&w=majority'
 //подключение базы данных mongodb
-mongoose.connect('mongodb+srv://admin:Qwer_1234@cluster0.wy8ihwv.mongodb.net/blog2?retryWrites=true&w=majority').then(() => console.log('db ok'))
+mongoose.connect(process.env.MONGODB_URL).then(() => console.log('db ok'))
     .catch((err) => console.log('db err', err))
 
-//создание express приложения
-const app = express()
+
 
 //создания хранилища картинок
 const storage = multer.diskStorage({
@@ -34,13 +47,10 @@ const storage = multer.diskStorage({
 
 export const upload = multer({ storage })
 
-//подключаем json формат и теперь его начинает понимать приложение
-app.use(express.json())
 //показ картинок при запросе
 app.use('/uploads', express.static('uploads'))
 
-//разрешение позволяющее делать кросдоменные запросы
-app.use(cors())
+
 
 //роутинг
 
@@ -91,7 +101,7 @@ app.get('/posts/:postId/comments', getAllPost);
 
 
 //создание порта
-app.listen(process.env.reactapi || 4444, (err) => {
+app.listen(process.env.PORT || PORT, (err) => {
     if (err) {
         return console.warn(err)
     }
