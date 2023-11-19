@@ -1,5 +1,4 @@
 import express from "express";
-import { config } from "dotenv";
 import { commentsValidation, loginValidation, postCreateValidation, registerValidation } from "./validations.js"
 import mongoose from "mongoose"
 import fs from 'fs'
@@ -10,6 +9,9 @@ import { create, getAll, getLastTags, getNewPost, getOnePost, getPopulatePost, g
 import multer from "multer"
 import handleValidationErrors from './Utils/handleErrors.js'
 import { createComments, deleteComment, getAllPost } from "./controllers/CommentsController.js"
+import { config } from "dotenv";
+
+
 
 //создание express приложения
 const app = express()
@@ -18,7 +20,7 @@ const PORT = '4444'
 app.use(express.json())
 //разрешение позволяющее делать кросдоменные запросы
 app.use(cors())
-config();
+config()
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'https://blog-back-phi.vercel.app');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
