@@ -22,7 +22,7 @@ app.use(express.json())
 app.use(cors())
 config()
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://blog-back-phi.vercel.app');
+    res.setHeader('Access-Control-Allow-Origin', 'https://blog-back-one.vercel.app');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
@@ -71,7 +71,14 @@ app.post('/upload', upload.single('image'), (req, res) => {
         url: `/uploads/${req.file.originalname}`
     })
 })
-
+//создание порта
+app.listen(process.env.PORT || PORT, (err) => {
+    if (err) {
+        return console.warn(err)
+    }
+    console.log('serwer ok')
+})
+export default app
 
 //создание поста
 app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, create)
@@ -101,13 +108,3 @@ app.post('/posts/:postId/comment', commentsValidation, createComments);
 app.delete('/comments/:commentId', deleteComment);
 //получение поста с юзером
 app.get('/posts/:postId/comments', getAllPost);
-
-
-//создание порта
-app.listen(process.env.PORT || PORT, (err) => {
-    if (err) {
-        return console.warn(err)
-    }
-    console.log('serwer ok')
-})
-export default app
