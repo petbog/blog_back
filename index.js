@@ -23,7 +23,7 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
-});
+  });
 
 mongoose.connect(process.env.MONGODB_URL).then(() => console.log('db ok'))
     .catch((err) => console.log('db err', err))
