@@ -1,41 +1,34 @@
 import express from "express";
-import { commentsValidation, loginValidation, postCreateValidation, registerValidation } from "./validations.js"
-import mongoose from "mongoose"
-import fs from 'fs'
-import cors from 'cors'
-import checkAuth from "./Utils/checkAuth.js"
-import { getMe, login, register } from "./controllers/UserController.js"
-import { create, getAll, getLastTags, getNewPost, getOnePost, getPopulatePost, getPostsByTag, removePost, update } from "./controllers/PostController.js"
-import multer from "multer"
-import handleValidationErrors from './Utils/handleErrors.js'
-import { createComments, deleteComment, getAllPost } from "./controllers/CommentsController.js"
+import mongoose from "mongoose";
+import multer from "multer";
 import { config } from "dotenv";
+import fs from 'fs';
+import cors from 'cors';
+
+import { commentsValidation, loginValidation, postCreateValidation, registerValidation } from "./validations.js";
+import checkAuth from "./Utils/checkAuth.js";
+import { getMe, login, register } from "./controllers/UserController.js";
+import { create, getAll, getLastTags, getNewPost, getOnePost, getPopulatePost, getPostsByTag, removePost, update } from "./controllers/PostController.js";
+import handleValidationErrors from './Utils/handleErrors.js';
+import { createComments, deleteComment, getAllPost } from "./controllers/CommentsController.js";
 
 
-
-//создание express приложения
-const app = express()
-const PORT = '4444'
-//подключаем json формат и теперь его начинает понимать приложение
-app.use(express.json())
-//разрешение позволяющее делать кросдоменные запросы
+const app = express();
+const PORT = '4444';
+app.use(express.json());
 app.use(cors())
 config()
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://blog-back-one.vercel.app');
+    res.setHeader('Access-Control-Allow-Origin', 'https://frontblog-three.vercel.app');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
 });
 
-// 'mongodb+srv://admin:Qwer_1234@cluster0.wy8ihwv.mongodb.net/blog2?retryWrites=true&w=majority'
-//подключение базы данных mongodb
 mongoose.connect(process.env.MONGODB_URL).then(() => console.log('db ok'))
     .catch((err) => console.log('db err', err))
 
 
-
-//создания хранилища картинок
 const storage = multer.diskStorage({
     destination: (_, __, cb) => {
         if (!fs.existsSync('uploads')) {
