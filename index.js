@@ -24,6 +24,7 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
   });
+  
 
 mongoose.connect(process.env.MONGODB_URL).then(() => console.log('db ok'))
     .catch((err) => console.log('db err', err))
@@ -43,8 +44,7 @@ const storage = multer.diskStorage({
 
 export const upload = multer({ storage })
 
-//показ картинок при запросе
-app.use('/uploads', express.static('uploads'))
+
 
 
 
@@ -57,7 +57,9 @@ app.post('/auth/register', registerValidation, handleValidationErrors, register)
 //инфо о нас
 app.get('/auth/me', checkAuth, getMe)
 
-
+app.use(cors());
+//показ картинок при запросе
+app.use('/uploads', express.static('uploads'))
 //загрузка картинки
 app.post('/upload', upload.single('image'), (req, res) => {
     res.json({
