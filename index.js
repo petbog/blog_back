@@ -34,6 +34,7 @@ mongoose.connect(process.env.MONGODB_URL).then(() => console.log('db ok'))
 
 const storage = multer.diskStorage({
     destination: (_, __, cb) => {
+        const path = '/absolute/path/to/uploads';
         if (!fs.existsSync('uploads')) {
             fs.mkdirSync('uploads')
         }
