@@ -118,7 +118,7 @@ const app = express(); const PORT = '4444'; app.use(express.json()); app.use(cor
 
 mongoose.connect(process.env.MONGODB_URL).then(() => console.log('db ok')).catch((err) => console.log('db err', err));
 
-const storage = multer.diskStorage({ destination: (_, __, cb) => { const path = '/absolute/path/to/uploads'; if (!fs.existsSync('uploads')) { fs.mkdirSync('uploads'); } cb(null, 'uploads'); }, filename: (_, file, cb) => { cb(null, file.originalname); }, });
+const storage = multer.diskStorage({ destination: (_, __, cb) => { const path = '/absolute/path/to/uploads'; if (!fs.existsSync(path)) { fs.mkdirSync(path); } cb(null, path); }, filename: (_, file, cb) => { cb(null, file.originalname); }, }); 
 
 export const upload = multer({ storage });
 
