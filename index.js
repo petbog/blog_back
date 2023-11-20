@@ -16,7 +16,9 @@ import { createComments, deleteComment, getAllPost } from "./controllers/Comment
 const app = express();
 const PORT = '4444';
 app.use(express.json());
-app.use(cors())
+app.use(cors({
+    origin: 'https://frontblog-phi.vercel.app' 
+  }));
 config()
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'https://frontblog-phi.vercel.app');
@@ -57,7 +59,9 @@ app.post('/auth/register', registerValidation, handleValidationErrors, register)
 //инфо о нас
 app.get('/auth/me', checkAuth, getMe)
 
-app.use(cors());
+// app.use(cors({
+//     origin: 'https://frontblog-phi.vercel.app' 
+//   }));
 //показ картинок при запросе
 app.use('/uploads', express.static('uploads'))
 //загрузка картинки
