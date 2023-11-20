@@ -59,9 +59,9 @@ app.post('/auth/register', registerValidation, handleValidationErrors, register)
 //инфо о нас
 app.get('/auth/me', checkAuth, getMe)
 
-// app.use(cors({
-//     origin: 'https://frontblog-phi.vercel.app' 
-//   }));
+app.use(cors({
+    origin: 'https://frontblog-phi.vercel.app' 
+  }));
 //показ картинок при запросе
 app.use('/uploads', express.static('uploads'))
 //загрузка картинки
