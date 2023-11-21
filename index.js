@@ -10,7 +10,7 @@ import checkAuth from "./Utils/checkAuth.js";
 import { getMe, login, register } from "./controllers/UserController.js";
 import { create, getAll, getLastTags, getNewPost, getOnePost, getPopulatePost, getPostsByTag, removePost, update } from "./controllers/PostController.js";
 import handleValidationErrors from './Utils/handleErrors.js';
-import { createComments, deleteComment, getAllPost } from "./controllers/CommentsController.js";
+import { createComments, deleteComment, getAllComments, getAllPost } from "./controllers/CommentsController.js";
 
 
 const app = express();
