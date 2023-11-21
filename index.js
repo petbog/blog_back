@@ -17,11 +17,11 @@ const app = express();
 const PORT = '4444';
 app.use(express.json());
 app.use(cors({
-    origin: 'https://frontblog-phi.vercel.app' 
+    origin: 'https://frontblog-nine.vercel.app' 
   }));
 config()
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://frontblog-phi.vercel.app');
+    res.setHeader('Access-Control-Allow-Origin', 'https://frontblog-nine.vercel.app');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
