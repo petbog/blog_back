@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cors());
 config()
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://frontblog-nine.vercel.app');
+    res.setHeader('Access-Control-Allow-Origin', 'https://frontblog-henna.vercel.app');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
@@ -58,7 +58,7 @@ app.get('/auth/me', checkAuth, getMe)
 app.use('/uploads', express.static('uploads'))
 //загрузка картинки
 app.use('/upload', (req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://frontblog-phi.vercel.app');
+    res.setHeader('Access-Control-Allow-Origin', 'https://frontblog-henna.vercel.app');
     next();
   });
 app.post('/upload', upload.single('image'), (req, res) => {
