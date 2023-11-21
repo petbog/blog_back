@@ -16,9 +16,7 @@ import { createComments, deleteComment, getAllComments, getAllPost } from "./con
 const app = express();
 const PORT = '4444';
 app.use(express.json());
-app.use(cors({
-    origin: 'https://frontblog-nine.vercel.app' 
-  }));
+app.use(cors());
 config()
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'https://frontblog-nine.vercel.app');
