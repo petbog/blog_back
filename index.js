@@ -58,7 +58,7 @@ app.get('/auth/me', checkAuth, getMe)
 app.use('/uploads', express.static('uploads'))
 //загрузка картинки
 app.use('/upload', (req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://frontblog-henna.vercel.app');
+    // res.setHeader('Access-Control-Allow-Origin', 'https://frontblog-henna.vercel.app/');
     next();
   });
 app.post('/upload', upload.single('image'), (req, res) => {
