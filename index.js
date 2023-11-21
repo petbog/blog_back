@@ -34,7 +34,6 @@ mongoose.connect(process.env.MONGODB_URL).then(() => console.log('db ok'))
 
 const storage = multer.diskStorage({
     destination: (_, __, cb) => {
-        const path = '/absolute/path/to/uploads';
         if (!fs.existsSync('uploads')) {
             fs.mkdirSync('uploads')
         }
@@ -57,9 +56,6 @@ app.post('/auth/register', registerValidation, handleValidationErrors, register)
 //инфо о нас
 app.get('/auth/me', checkAuth, getMe)
 
-app.use(cors({
-    origin: 'https://frontblog-phi.vercel.app' 
-  }));
 //показ картинок при запросе
 app.use('/uploads', express.static('uploads'))
 //загрузка картинки
@@ -104,7 +100,7 @@ app.get('/new', getNewPost)
 //создание комментария
 app.post('/posts/:postId/comment', commentsValidation, createComments);
 //получение всех комментариев
-// app.get('/posts/:postId/comments', commentsValidation,getAllComments);
+app.get('/posts/:postId/comments', commentsValidation,getAllComments);
 //удаление коомментария
 app.delete('/comments/:commentId', deleteComment);
 //получение поста с юзером
