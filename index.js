@@ -101,3 +101,6 @@ app.post('/posts/:postId/comment', commentsValidation, createComments);
 app.delete('/comments/:commentId', deleteComment);
 //получение поста с юзером
 app.get('/posts/:postId/comments', getAllPost);
+
+
+    // "start": "nodemon index.js",
