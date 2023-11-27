@@ -16,7 +16,7 @@ import { createComments, deleteComment, getAllComments, getAllPost } from "./con
 const app = express();
 const PORT = '4444';
 app.use(express.json());
-// app.use(cors());
+app.use(cors());
 config()
 app.use((req, res, next) => { 
     res.setHeader('Access-Control-Allow-Origin', 'https://frontblog-delta.vercel.app');
@@ -104,7 +104,3 @@ app.delete('/comments/:commentId', deleteComment);
 //получение поста с юзером
 app.get('/posts/:postId/comments', getAllPost);
 
-
-    // "start": "nodemon index.js",
-    // "punycode": "^2.3.1"
-    // "cors": "^2.8.5",
