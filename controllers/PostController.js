@@ -84,8 +84,9 @@ export const create = async (req, res) => {
             user: req.userId
         })
         const post = await doc.save()
+        const posts = await PostModel.find().populate('user').populate('comments').exec();
 
-        res.json(post)
+        res.json(posts);
     } catch (error) {
         console.log(error)
         res.status(500).json({
@@ -134,7 +135,7 @@ export const getPostsByTag = async (req, res) => {
         tags: {
           $regex: tags.map(tag => `#${tag.replace('#', '')}`).join('|'),
         }
-      });
+      }).populate('user');
   
       res.json(articles);
     } catch (err) {
@@ -146,7 +147,7 @@ export const getPostsByTag = async (req, res) => {
 //получение популярных статей
 export const getPopulatePost = async (req, res) => {
     try {
-        const posts = await PostModel.find().sort({ viewsCount: -1 });
+        const posts = await PostModel.find().sort({ viewsCount: -1 }).populate('user');
         res.json(posts);
     } catch (err) {
         console.error(err);
@@ -157,7 +158,7 @@ export const getPopulatePost = async (req, res) => {
 //сортировка постов новые
 export const getNewPost = async (req, res) => {
     try {
-        const posts = await PostModel.find().sort({ createdAt: -1 });
+        const posts = await PostModel.find().populate('user').sort({ createdAt: -1 });
         res.json(posts);
     } catch (err) {
         console.error(err);
